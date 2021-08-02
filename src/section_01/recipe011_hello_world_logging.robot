@@ -16,7 +16,7 @@ ${name}           Alan Turing
 *** Test Cases ***
 Sending Ouput To Log and Console
     [Documentation]    Output variables & text messages to the log, console or both.
-    Log Variables
+    Log variables
     Log    Hello World!
     Log    Hello ${name}!    console=yes
     Log To Console    Hello World again, this time only output to the console.

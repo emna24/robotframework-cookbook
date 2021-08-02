@@ -23,7 +23,7 @@ How Much Time Has Passed Since Unicode 1.0 Was Released
     ${time_passed_since_release}=    Subtract Date From Date
     ...    ${current_date}    ${unicode_release_date}    result_format=verbose
     Log    ${time_passed_since_release}
-
+0
 How Many Days And Years Passed Since Unicode 1.0 Was Released
     ${current_date}=    Get Current Date
     ${days_passed_since_release}=    Subtract Date From Date
