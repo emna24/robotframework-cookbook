@@ -11,6 +11,9 @@ Library          Collections
 Library          RequestsLibrary
 Force Tags       py3.6    py3.7    py3.8
 
+Suite Setup    Create Session    github    https://api.github.com    verify=true    
+               
+
 *** Variables ***
 ${recipe}         Recipe 9.1 Working With Requests Library
 ${level}          Intermediate
@@ -18,10 +21,33 @@ ${category}       External Library: RequestsLibrary
 
 *** Test Cases ***
 Get Request
-    Create Session    github    https://api.github.com
-    ${response} =    Get On Session    github    /users/adrianyorke
+    ${response} =    Get User  adrianyorke
     Log    ${response.json()}
     Should Be Equal As Strings    ${response.status_code}    200
     Dictionary Should Not Contain Value    ${response.json()}    The Black Knight
     Dictionary Should Contain Value    ${response.json()}    Adrian Yorke
     Dictionary Should Contain Value    ${response.json()}    Helsinki, Finland
+
+Get Emna Request  
+    ${response} =    Get User  emna24
+    Log    ${response.json()}
+    Should Be Equal As Strings    ${response.status_code}    200
+    Dictionary Should Contain Value    ${response.json()}    Emna Ayadi
+    Dictionary Should Contain Value    ${response.json()}    Sfax, Tunisia
+
+Post Request Test     
+    [Setup]    Create Session  jsonplaceholder  https://jsonplaceholder.typicode.com    verify=true                                                                                  
+    &{data}=    Create dictionary  title=Testing POST requests via ROBOTFRAMEWORK  body=This is a simple test!  userId=3
+    ${resp}=    POST On Session    jsonplaceholder  /posts  json=${data}  expected_status=any                                                                 
+    Status Should Be                 201  ${resp} 
+    Dictionary Should Contain Key    ${resp.json()}  id      
+
+*** Keywords ***
+Get User
+    [Arguments]    ${username}   
+    ${full_username}=    Catenate    SEPARATOR=    /users    /${username}
+    ${response} =    Get On Session    github     ${full_username}
+    [return]    ${response}
+    
+    
+ 
